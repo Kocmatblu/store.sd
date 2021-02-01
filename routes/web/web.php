@@ -11,6 +11,19 @@
 |
 */
 
-Route::get('/', function () {
+Route::get('/home', function () {
     return view('index');
+});
+
+Route::get('/categories', function () {
+    return view('store');
+});
+
+Route::get('/product', function () {
+    return view('product');
+});
+
+
+Route::get('/cart', function () {
+    return view('checkout');
 });
