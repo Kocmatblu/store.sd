@@ -11,13 +11,9 @@
 |
 */
 
-Route::get('/home', function () {
-    return view('index');
-});
+Route::get('/home','HomeController@showHomePage');
 
-Route::get('/categories', function () {
-    return view('store');
-});
+Route::get('/categories', 'Category@showCategories');
 
 Route::get('/product', function () {
     return view('product');
@@ -27,3 +23,9 @@ Route::get('/product', function () {
 Route::get('/cart', function () {
     return view('checkout');
 });
+
+
+Route::get('/login', 'Auth\LoginController@showLoginForm')->name('login');
+
+Route::get('/register', 'Auth\RegisterController@showRegisterForm')->name('register');
+Route::post('/register', 'Auth\RegisterController@setData')->name('createNewUser');

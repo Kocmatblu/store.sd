@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\User;
 use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
@@ -23,12 +24,22 @@ class RegisterController extends Controller
 
     use RegistersUsers;
 
+    protected $data;
     /**
      * Where to redirect users after registration.
      *
      * @var string
      */
-    protected $redirectTo = '/home';
+
+
+    protected function setData(Request $request){
+        $this->data['name']=$request->name;
+        $this->data['email']=$request->email;
+        $this->data['password']=$request->password;
+        $this->create($this->data);
+        //return redirect('/login');
+    }
+    protected $redirectTo = '/login';
 
     /**
      * Create a new controller instance.
@@ -46,8 +57,12 @@ class RegisterController extends Controller
      * @param  array  $data
      * @return \Illuminate\Contracts\Validation\Validator
      */
+
+
+    //TODO
     protected function validator(array $data)
     {
+        print_r($data);
         return Validator::make($data, [
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
@@ -61,12 +76,17 @@ class RegisterController extends Controller
      * @param  array  $data
      * @return \App\User
      */
+
     protected function create(array $data)
     {
+        $this->validator($this->data);
         return User::create([
-            'name' => $data['name'],
-            'email' => $data['email'],
-            'password' => Hash::make($data['password']),
+            'name' => $this->data['name'],
+            'email' => $this->data['email'],
+            'password' => Hash::make($this->data['password']),
         ]);
+    }
+    protected function showRegisterForm(){
+        return view('register');
     }
 }
